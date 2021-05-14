@@ -2,8 +2,8 @@ detecteddistrict,detectedstate,population,long,lat
 Adilabad,Telangana,708972,78.53333,19.66667
 Agar Malwa ,Madhya Pradesh,571278,76.1,23.94
 Agra,Uttar Pradesh,4418797,78.02,27.18
-Ahmadabad,Gujarat,7045313,72.58,23.03
-Ahmadnagar,Maharashtra,4543159,74.7325,19.09806
+Ahmedabad,Gujarat,7045313,72.58,23.03
+Ahmednagar,Maharashtra,4543159,74.7325,19.09806
 Aizawl,Mizoram,400309,92.71667,23.73333
 Ajmer,Rajasthan,2583052,74.42,26.27
 Akola,Maharashtra,1813906,77,20.73333
@@ -25,7 +25,7 @@ Anand,Gujarat,2092745,72.951,22.556
 Anantapur,Andhra Pradesh,4081148,77.6,14.68333
 Anantnag,Jammu and Kashmir,1078692,75.22038,33.74568
 Anjaw,Arunachal Pradesh,21167,96.84465,28.033207
-Anugul,Odisha,1273821,85.02389,20.79722
+Angul,Odisha,1273821,85.02389,20.79722
 Anuppur,Madhya Pradesh,749237,81.7,23.12
 Araria,Bihar,2811569,87.52,26.15
 Aravalli ,Gujarat,1039918,72.68333,23.21667
@@ -37,29 +37,29 @@ Aurangabad,Bihar,2540073,84.3667,24.75
 Aurangabad,Maharashtra,3701282,75.34344,19.88879
 Azamgarh,Uttar Pradesh,4613913,83.19,26.06
 Badgam,Jammu and Kashmir,753745,74.78,34.02
-Bagalkot,Karnataka,1889752,75.7,16.18333
+Bagalkote,Karnataka,1889752,75.7,16.18333
 Bageshwar,Uttarakhand,259898,79.77,29.85
 Baghpat,Uttar Pradesh,1303048,77.22,28.95
 Bahraich,Uttar Pradesh,3487731,81.59583,27.57417
 Baksa,Assam,950075,91.72,26.52
 Balaghat,Madhya Pradesh,1701698,80.18,21.8
 Balangir,Odisha,1648997,83.5,20.7
-Baleshwar,Odisha,2320529,86.9335,21.4927
+Balasore,Odisha,2320529,86.9335,21.4927
 Ballia,Uttar Pradesh,3239774,84.15194,25.7625
 Baloda Bazar ,Chhattisgarh,1305343,82.17,21.67
 Balod ,Chhattisgarh,826165,81.2,20.73
 Balrampur,Uttar Pradesh,2148665,82.18,27.43
 Balrampur ,Chhattisgarh,730491,83.480212,23.627727
-Banas Kantha,Gujarat,3120506,72.43139,24.17306
+Banaskantha,Gujarat,3120506,72.43139,24.17306
 Banda,Uttar Pradesh,1799410,80.33333,25.48333
-Bandipore,Jammu and Kashmir,392232,74.65,34.4167
-Bangalore,Karnataka,9621551,77.59796,12.96991
-Bangalore Rural,Karnataka,990923,77.339839,13.182217
+Bandipora,Jammu and Kashmir,392232,74.65,34.4167
+Bengaluru Urban,Karnataka,9621551,77.59796,12.96991
+Bengaluru Rural,Karnataka,990923,77.339839,13.182217
 Banka,Bihar,2034763,86.92,24.88
 Bankura,West Bengal,3596674,87.06667,23.25
 Banswara,Rajasthan,1797485,74.4425,23.54083
-Bara Banki,Uttar Pradesh,3260699,81.306891,26.923854
-Baramula,Jammu and Kashmir,1008039,74.34,34.2
+Barabanki,Uttar Pradesh,3260699,81.306891,26.923854
+Baramulla,Jammu and Kashmir,1008039,74.34,34.2
 Baran,Rajasthan,1222755,76.51,25.1
 Bareilly,Uttar Pradesh,4448359,79.415,28.364
 Bargarh,Odisha,1481255,83.616,21.333
@@ -73,8 +73,8 @@ Bathinda,Punjab,1388525,74.95,30.23
 Baudh,Odisha,441162,84.333,20.833
 Begusarai,Bihar,2970541,86.13,25.42
 Belgaum,Karnataka,4779661,74.5,15.86667
-Bellary,Karnataka,2452595,77.086359,15.187284
-Bemetara ,Chhattisgarh,795759,81.5375,21.7197
+Ballari,Karnataka,2452595,77.086359,15.187284
+Bametara ,Chhattisgarh,795759,81.5375,21.7197
 Betul,Madhya Pradesh,1575362,77.9,21.92
 Bhadohi ,Uttar Pradesh,1578213,82.570292,25.393193
 Bhadradri Kothagudem ,Telangana,1069261,80.63,17.55
@@ -105,13 +105,13 @@ Bongaigaon,Assam,738804,90.5667,26.4667
 Botad ,Gujarat,656005,71.67,22.17
 Budaun,Uttar Pradesh,3127621,78.98333,28.11667
 Bulandshahr,Uttar Pradesh,3499171,77.85,28.4
-Buldana,Maharashtra,2586258,76.18333,20.53333
+Buldhana,Maharashtra,2586258,76.18333,20.53333
 Bundi,Rajasthan,1110906,75.63722,25.43833
 Burhanpur,Madhya Pradesh,757847,76.199409,21.33505
 Buxar,Bihar,1706352,83.98054,25.56049
 Cachar,Assam,1736617,92.81,24.84
 Central,Delhi,582320,77.21667,28.66667
-Chamarajanagar,Karnataka,1020791,77.3,12
+Chamarajanagara,Karnataka,1020791,77.3,12
 Chamba,Himachal Pradesh,519080,76.13,32.57
 Chamoli,Uttarakhand,391605,79.33,30.42
 Champawat,Uttarakhand,259648,80.1,29.33
@@ -129,11 +129,11 @@ Chhatarpur,Madhya Pradesh,1762375,79.6,24.9
 Chhindwara,Madhya Pradesh,2090922,78.94806,22.05972
 Chhota Udaipur ,Gujarat,1071831,74.0158,22.304
 Chikkaballapura,Karnataka,1255104,77.56029,12.97021
-Chikmagalur,Karnataka,1137961,75.78333,13.31667
+Chikkamagaluru,Karnataka,1137961,75.78333,13.31667
 Chirang,Assam,482162,90.647737,26.64781
 Chitradurga,Karnataka,1659456,76.4,14.23333
 Chitrakoot,Uttar Pradesh,991730,80.91528,25.21361
-Chittaurgarh,Rajasthan,1544338,74.62389,24.88944
+Chittorgarh,Rajasthan,1544338,74.62389,24.88944
 Chittoor,Andhra Pradesh,4174064,79.11667,13.2
 Churachandpur,Manipur,226884,93.68333,24.33333
 Churu,Rajasthan,2039547,74.95,28.3
@@ -148,14 +148,14 @@ Dakshina Kannada,Karnataka,2089649,75.4,13
 Daman,Daman and Diu,191173,72.85,20.42694
 Damoh,Madhya Pradesh,1264219,79.45,23.84
 Darbhanga,Bihar,3937385,85.9,26.16667
-Darjiling,West Bengal,1595181,88.131065,27.058261
+Darjeeling,West Bengal,1595181,88.131065,27.058261
 Darrang,Assam,928500,92.12,26.51
 Datia,Madhya Pradesh,786754,78.47,25.67
 Dausa,Rajasthan,1634409,76.33,26.9
 Davanagere,Karnataka,1945497,75.9233,14.4647
 Debagarh,Odisha,312520,84.73,21.53
 Dehradun,Uttarakhand,1696694,78.06,30.33
-Deoghar,Jharkhand,1492073,86.7,24.48
+Deogarh,Jharkhand,1492073,86.7,24.48
 Deoria,Uttar Pradesh,3100946,83.77917,26.50167
 Devbhumi Dwarka ,Gujarat,752484,68.96861,22.24028
 Dewas,Madhya Pradesh,1563715,76.05526,22.96585
@@ -165,12 +165,12 @@ Dhanbad,Jharkhand,2684487,86.41,23.78
 Dhar,Madhya Pradesh,2185793,75.3,22.6
 Dharmapuri,Tamil Nadu,1506843,78.158,12.127
 Dharwad,Karnataka,1847023,75.01667,15.46667
-Dhaulpur,Rajasthan,1206516,77.9,26.7
+Dholpur,Rajasthan,1206516,77.9,26.7
 Dhemaji,Assam,686133,94.58,27.48
 Dhenkanal,Odisha,1192811,85.6,20.67
 Dhubri,Assam,1394144,89.9667,26.0333
 Dhule,Maharashtra,2050862,74.78333,20.9
-Dibang Valley ,Arunachal Pradesh,8004,95.7,28.7
+Upper Dibang Valley ,Arunachal Pradesh,8004,95.7,28.7
 Dibrugarh,Assam,1326335,95,27.48333
 Dima Hasao,Assam,214102,91.77,26.14
 Dimapur,Nagaland,378811,93.74167,25.9125
@@ -225,7 +225,7 @@ Godda,Jharkhand,1313551,87.22,24.83
 Golaghat,Assam,1066888,93.96954,26.50896
 Gomati ,Tripura,429237,91.49925,23.56277
 Gonda,Uttar Pradesh,3433919,81.93333,27.13333
-Gondiya,Maharashtra,1322507,80.2,21.45
+Gondia,Maharashtra,1322507,80.2,21.45
 Gopalganj,Bihar,2562012,84.43,26.47
 Gorakhpur,Uttar Pradesh,4440895,83.36667,26.75
 Gulbarga,Karnataka,2566326,76.945164,17.367313
@@ -242,7 +242,7 @@ Hanumangarh,Rajasthan,1774692,74.31667,29.58333
 Hapur ,Uttar Pradesh,1338311,77.78473,28.72795
 Harda,Madhya Pradesh,570465,77.09,22.34
 Hardoi,Uttar Pradesh,4092845,80.12,27.42
-Hardwar,Uttarakhand,1890422,78.089922,29.909216
+Haridwar,Uttarakhand,1890422,78.089922,29.909216
 Hassan,Karnataka,1776421,76.1,13.06
 Hathras ,Uttar Pradesh,1564708,78.03,27.36
 Haveri,Karnataka,1597668,75.4,14.8
@@ -260,23 +260,23 @@ Imphal East,Manipur,412275,93.95,24.8
 Imphal West,Manipur,517992,93.9,24.81667
 Indore,Madhya Pradesh,3276697,75.84722,22.72056
 Jabalpur,Madhya Pradesh,2463289,79.93333,23.16667
-Jagatsinghapur,Odisha,1136971,86.64,20.26
+Jagatsinghpur,Odisha,1136971,86.64,20.26
 Jagtial ,Telangana,985417,78.93,18.8
 Jaipur,Rajasthan,6626178,75.86667,26.91667
 Jaisalmer,Rajasthan,669919,70.91667,26.91667
-Jajapur,Odisha,1827192,86.33333,20.85
+Jajpur,Odisha,1827192,86.33333,20.85
 Jalandhar,Punjab,2193590,75.57917,31.32556
 Jalaun,Uttar Pradesh,1689974,79.5,26
 Jalgaon,Maharashtra,4229917,75.56667,21.01667
 Jalna,Maharashtra,1959046,75.88333,19.83333
-Jalor,Rajasthan,1828730,72.61667,25.35
+Jalore,Rajasthan,1828730,72.61667,25.35
 Jalpaiguri,West Bengal,2381596,88.73333,26.51667
 Jammu,Jammu and Kashmir,1529958,74.85,32.73333
 Jamnagar,Gujarat,1407635,70.07,22.47
 Jamtara,Jharkhand,791042,86.8,23.96
 Jamui,Bihar,1760405,86.22,24.92
 Jangaon ,Telangana,566376,79.18,17.72
-Janjgir-Champa,Chhattisgarh,1619707,82.58,22.01
+Janjgir Champa,Chhattisgarh,1619707,82.58,22.01
 Jashpur,Chhattisgarh,851669,84.15,22.9
 Jaunpur,Uttar Pradesh,4494204,82.75,25.75
 Jayashankar Bhupalpally ,Telangana,711434,79.59,17.99
@@ -294,7 +294,7 @@ Jodhpur,Rajasthan,3687165,73.26135,26.173068
 Jogulamba Gadwal ,Telangana,609990,77.8,16.23
 Jorhat,Assam,924952,94.21667,26.75
 Junagadh,Gujarat,1525605,70.47,21.52
-Kabirdham ,Chhattisgarh,822526,81.25,22.01667
+Kabeerdham ,Chhattisgarh,822526,81.25,22.01667
 Kachchh,Gujarat,2092371,70.367,23.915
 Kaimur,Bihar,1626384,83.61241,25.04059
 Kaithal,Haryana,1074304,76.39667,29.80167
@@ -305,12 +305,12 @@ Kamareddy ,Telangana,972625,78.35,18.3167
 Kamjong ,Manipur,45616,94.51056,24.86556
 Kamrup,Assam,1517542,92.018827,26.072011
 Kamrup Metropolitan,Assam,1253938,92.018827,26.072011
-Kanchipuram,Tamil Nadu,3998252,79.807251,12.833229
+Kancheepuram,Tamil Nadu,3998252,79.807251,12.833229
 Kandhamal,Odisha,733110,84.23,20.47
 Kangpokpi ,Manipur,193744,93.9706,25.1489
 Kangra,Himachal Pradesh,1510075,76.26667,32.1
 Kannauj,Uttar Pradesh,1656616,79.92,27.07
-Kanniyakumari,Tamil Nadu,1870374,77.355043,8.328036
+Kanyakumari,Tamil Nadu,1870374,77.355043,8.328036
 Kannur,Kerala,2523003,75.35556,11.86889
 Kanpur Dehat,Uttar Pradesh,1796184,79.9672,26.3443
 Kanpur Nagar,Uttar Pradesh,4581268,80.33,26.46
@@ -345,7 +345,7 @@ Kiphire,Nagaland,74004,94.78333,25.9
 Kishanganj,Bihar,1690400,86.9509,25.6844
 Kishtwar,Jammu and Kashmir,230696,75.76945,33.31268
 Kodagu,Karnataka,554519,75.7397,12.4208
-Kodarma,Jharkhand,716259,85.6,24.47
+Koderma,Jharkhand,716259,85.6,24.47
 Kohima,Nagaland,267988,94.11944,25.66667
 Kokrajhar,Assam,887142,90.27,26.4
 Kolar,Karnataka,1536401,78.13333,13.13333
@@ -372,8 +372,8 @@ Kurnool,Andhra Pradesh,4053463,78.035,15.82222
 Kurukshetra,Haryana,964655,76.853061,29.965888
 Kurung Kumey,Arunachal Pradesh,45372,93.35,27.9
 Kushinagar,Uttar Pradesh,3564544,83.888798,26.739546
-Lahul and Spiti,Himachal Pradesh,31564,77.580009,32.500234
-Lakhimpur,Assam,1042137,94.25,27.35
+Lahaul and Spiti,Himachal Pradesh,31564,77.580009,32.500234
+Lakhimpur Kheri,Assam,1042137,94.25,27.35
 Lakhisarai,Bihar,1000912,86.09,25.17
 Lakshadweep,Lakshadweep,64473,73.680555,10.813053
 Lalitpur,Uttar Pradesh,1221592,78.41889,24.69028
@@ -406,7 +406,7 @@ Mahrajganj,Uttar Pradesh,2684703,83.57,27.13
 Mainpuri,Uttar Pradesh,1868529,79.02,27.23
 Majuli ,Assam,167304,95.74417,27.903601
 Malappuram,Kerala,4112920,76.07944,11.04167
-Maldah,West Bengal,3988845,88.15,25
+Malda,West Bengal,3988845,88.15,25
 Malkangiri,Odisha,613192,82.13,18.25
 Mamit,Mizoram,86364,92.49137,23.92514
 Mancherial ,Telangana,807037,79.46394,18.86787
@@ -430,7 +430,7 @@ Moradabad,Uttar Pradesh,3126507,78.78333,28.83333
 Morbi ,Gujarat,960329,70.83333,22.81667
 Morena,Madhya Pradesh,1965970,78,26.5
 Morigaon,Assam,957423,92.194349,26.29226
-Muktsar,Punjab,901896,74.515,30.475
+Sri Muktsar Sahib,Punjab,901896,74.515,30.475
 Mumbai,Maharashtra,3085411,72.83333,18.96667
 Mumbai Suburban,Maharashtra,9356962,72.83333,19.05
 Mungeli ,Chhattisgarh,701707,81.67,22.067
@@ -438,7 +438,7 @@ Munger,Bihar,1367765,86.47,25.38
 Murshidabad,West Bengal,7103807,88.26,24.14
 Muzaffarnagar,Uttar Pradesh,2869934,77.58333,29.45
 Muzaffarpur,Bihar,4801062,85.45,26.07
-Mysore,Karnataka,3001127,76.64333,12.30306
+Mysuru,Karnataka,3001127,76.64333,12.30306
 Nabarangapur,Odisha,1220946,82.55,19.23333
 Nadia,West Bengal,5167600,88.5,23.4
 Nagaon,Assam,1892550,92.68333,26.33333
@@ -456,13 +456,13 @@ Nanded,Maharashtra,3361292,77.33333,19.15
 Nandurbar,Maharashtra,1648295,74.25,21.36667
 Narayanpur,Chhattisgarh,139820,81.25,19.71667
 Narmada,Gujarat,590297,72.616582,23.082377
-Narsimhapur,Madhya Pradesh,1091854,79.2,22.95
+Narsinghpur,Madhya Pradesh,1091854,79.2,22.95
 Nashik,Maharashtra,6107187,73.78333,20
 Navsari,Gujarat,1329672,72.92306,20.95056
 Nawada,Bihar,2219146,85.53,24.88
 Nayagarh,Odisha,962789,85.1,20.13
 Neemuch,Madhya Pradesh,826067,74.865302,24.467262
-New Delhi,Delhi,142004,77.2,28.7
+Delhi,Delhi,142004,77.2,28.7
 Nicobar,Andaman and Nicobar Islands,36842,92.76109,9.15734
 Nirmal ,Telangana,709418,78.364607,19.124803
 Nizamabad,Telangana,1571022,78.1,18.68333
@@ -474,7 +474,7 @@ North East,Delhi,1378779,77.221449,28.633862
 North Garo Hills ,Meghalaya,118300,90.727408,25.861001
 North Goa,Goa,818008,73.8245,15.4938
 North Tripura,Tripura,417441,92.25346,24.092821
-North Twenty Four Parganas,West Bengal,10009781,88.44383,22.68002
+North 24 Parganas,West Bengal,10009781,88.44383,22.68002
 North West,Delhi,3656539,77.303877,28.635056
 Nuapada,Odisha,610382,82.76,20.31
 Osmanabad,Maharashtra,1657576,76.05,18.16667
@@ -484,7 +484,7 @@ Palamu,Jharkhand,1939869,84.07,24.03
 Palghar ,Maharashtra,2990116,72.77,19.7
 Pali,Rajasthan,2037573,73.32333,25.7725
 Palwal,Haryana,1042708,77.33,28.15
-Panch Mahals,Gujarat,1642268,73.4627,22.6078
+Panchmahal,Gujarat,1642268,73.4627,22.6078
 Panchkula,Haryana,561293,76.85028,30.69444
 Panipat,Haryana,1205437,76.96667,29.38333
 Panna,Madhya Pradesh,1016520,80.18,24.72
@@ -492,8 +492,8 @@ Papum Pare,Arunachal Pradesh,176573,93.72,27.15
 Parbhani,Maharashtra,1836086,76.78333,19.26667
 Paschim Bardhaman ,West Bengal,2882031,87.892319,23.40572
 Paschim Medinipur,West Bengal,4776909,87.33333,22.43333
-Pashchim Champaran,Bihar,3935042,84.29,27.12
-Pashchimi Singhbhum,Jharkhand,1502338,85.8167,22.5667
+West Champaran,Bihar,3935042,84.29,27.12
+West Singhbhum,Jharkhand,1502338,85.8167,22.5667
 Patan,Gujarat,1343734,72.12,23.83
 Pathanamthitta,Kerala,1197412,76.78722,9.26472
 Pathankot ,Punjab,676598,75.64972,32.26889
@@ -516,12 +516,12 @@ Pulwama,Jammu and Kashmir,560440,74.92,33.88
 Punch,Jammu and Kashmir,476835,74.1,33.76667
 Pune,Maharashtra,9429408,73.856385,18.527763
 Purba Bardhaman ,West Bengal,4835532,87.888599,22.793287
-Purba Champaran,Bihar,5099371,84.9,26.64
+East Champaran,Bihar,5099371,84.9,26.64
 Purba Medinipur,West Bengal,5095875,87.33333,22.43333
-Purbi Singhbhum,Jharkhand,2293919,86.1834,22.8
+East Singhbhum,Jharkhand,2293919,86.1834,22.8
 Puri,Odisha,1698730,85.81667,19.8
 Purnia,Bihar,3264619,87.4667,25.7833
-Puruliya,West Bengal,2930115,86.36667,23.33333
+Purulia,West Bengal,2930115,86.36667,23.33333
 Rae Bareli,Uttar Pradesh,2403705,81.2336,26.23384
 Raichur,Karnataka,1928812,77.37,16.2
 Raigad ,Maharashtra,2634200,72.88,18.65
@@ -552,12 +552,12 @@ Rohtak,Haryana,1061204,76.56667,28.9
 Rohtas,Bihar,2959918,84.01,24.95
 Rudraprayag,Uttarakhand,242285,78.98167,30.28611
 Rupnagar,Punjab,684627,76.53306,30.96639
-Sabar Kantha,Gujarat,1388671,73.34,23.67
+Sabarkantha,Gujarat,1388671,73.34,23.67
 Sagar,Madhya Pradesh,2378458,78.71,23.83
 Saharanpur,Uttar Pradesh,3466382,77.68333,29.9
 Saharsa,Bihar,1900661,86.6,25.88
 Sahibganj,Jharkhand,1150567,87.65,25.25
-Sahibzada Ajit Singh Nagar,Punjab,994628,75.868167,30.885977
+S.A.S. Nagar,Punjab,994628,75.868167,30.885977
 Saiha,Mizoram,56574,92.98,22.49
 Salem,Tamil Nadu,3482056,78.16667,11.65
 Samastipur,Bihar,4261566,85.78317175,25.8622835
@@ -621,11 +621,11 @@ South Garo Hills,Meghalaya,142334,90.63333,25.2
 South Goa,Goa,640537,73.9583,15.2724
 South Salmara-Mankachar ,Assam,555114,91.77,26.14
 South Tripura,Tripura,446764,91.65353,23.183439
-South Twenty Four Parganas,West Bengal,8161961,88.36667,22.56667
+South 24 Parganas,West Bengal,8161961,88.36667,22.56667
 South West,Delhi,2292958,88.25,27.3333
 South West Garo Hills ,Meghalaya,172500,90.2167,25.5167
 South West Khasi Hills ,Meghalaya,110200,91.195685,25.317698
-Sri Potti Sriramulu Nellore,Andhra Pradesh,2963557,79.97,14.43
+S.P.S. Nellore,Andhra Pradesh,2963557,79.97,14.43
 Srikakulam,Andhra Pradesh,2703114,83.9,18.3
 Srinagar,Jammu and Kashmir,1236829,74.80611,34.09111
 Subarnapur,Odisha,610183,84.179527,20.868966
@@ -646,8 +646,8 @@ Tehri Garhwal,Uttarakhand,618931,78.48,30.38
 Tengnoupal ,Manipur,59110,94.254649,24.381251
 Thane,Maharashtra,8070032,72.97,19.2
 Thanjavur,Tamil Nadu,2405890,79.15,10.8
-The Dangs,Gujarat,228291,72.68333,23.21667
-The Nilgiris,Tamil Nadu,735394,76.71,11.41
+Dang,Gujarat,228291,72.68333,23.21667
+Nilgiris,Tamil Nadu,735394,76.71,11.41
 Theni,Tamil Nadu,1245899,77.48333,10
 Thiruvallur,Tamil Nadu,3728104,79.9089,13.1438
 Thiruvananthapuram,Kerala,3301427,76.89972,8.5
@@ -664,7 +664,7 @@ Tiruppur,Tamil Nadu,2479052,77.25,11.18
 Tiruvannamalai,Tamil Nadu,2464875,79.08333,12.25
 Tonk,Rajasthan,1421326,75.78333,26.16667
 Tuensang,Nagaland,196596,94.81667,26.23333
-Tumkur,Karnataka,2678980,77.10167,13.34222
+Tumakuru,Karnataka,2678980,77.10167,13.34222
 Udaipur,Rajasthan,3068420,73.68333,24.58333
 Udalguri,Assam,831668,92.0962,26.7452
 Udham Singh Nagar,Uttarakhand,1648902,79.39,28.98
