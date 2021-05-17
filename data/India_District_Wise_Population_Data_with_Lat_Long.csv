@@ -144,7 +144,6 @@ Gajapati,Odisha,577817,84.2,18.88
 Kondagaon ,Chhattisgarh,578824,81.664,19.5908
 Jharsuguda,Odisha,579505,84.016,21.85
 Solan,Himachal Pradesh,580320,77.12,30.92
-Central,Delhi,582320,77.21667,28.66667
 Porbandar,Gujarat,585449,69.60929,21.64219
 Narmada,Gujarat,590297,72.616582,23.082377
 Barnala,Punjab,595527,75.55,30.3833
@@ -230,7 +229,6 @@ Pratapgarh,Rajasthan,867848,74.78,24.03
 Kupwara,Jammu and Kashmir,870354,74.2425,34.54111
 Mahoba,Uttar Pradesh,875958,79.87288,25.28
 Kokrajhar,Assam,887142,90.27,26.4
-North,Delhi,887978,88.55,27.52
 Rewari,Haryana,900332,76.61667,28.18333
 Pakur,Jharkhand,900422,87.85,24.63
 Sri Muktsar Sahib,Punjab,901896,74.515,30.475
@@ -296,7 +294,6 @@ Narsinghpur,Madhya Pradesh,1091854,79.2,22.95
 Suryapet ,Telangana,1099560,79.6167,17.15
 Hamirpur,Uttar Pradesh,1104285,80.15,25.95
 Idukki,Kerala,1108974,76.9667,9.85
-Shahdara ,Delhi,1110751,77.2983,28.6679
 Bundi,Rajasthan,1110906,75.63722,25.43833
 Shrawasti,Uttar Pradesh,1117361,81.93484,27.70196
 Tarn Taran,Punjab,1119627,74.8164,31.3269
@@ -327,7 +324,6 @@ Nabarangapur,Odisha,1220946,82.55,19.23333
 Lalitpur,Uttar Pradesh,1221592,78.41889,24.69028
 Baran,Rajasthan,1222755,76.51,25.1
 Karimganj,Assam,1228686,91.77,26.14
-South,Delhi,1231293,88.5,27.18
 Srinagar,Jammu and Kashmir,1236829,74.80611,34.09111
 Hoshangabad,Madhya Pradesh,1241350,77.72,22.75
 Guna,Madhya Pradesh,1241519,77.31667,24.65
@@ -363,7 +359,6 @@ Mandsaur,Madhya Pradesh,1340411,75.06794,24.07262
 Patan,Gujarat,1343734,72.12,23.83
 Ramanathapuram,Tamil Nadu,1353445,78.83333,9.38333
 Munger,Bihar,1367765,86.47,25.38
-North East,Delhi,1378779,77.221449,28.633862
 Seoni,Madhya Pradesh,1379131,79.53,22.08
 Auraiya,Uttar Pradesh,1379545,79.51167,26.46306
 Koraput,Odisha,1379647,82.7083,18.8083
@@ -391,7 +386,6 @@ Mahabubnagar,Telangana,1486777,77.56,16.46
 Alipurduar ,West Bengal,1491250,89.679575,26.623615
 Deoghar,Jharkhand,1492073,86.7,24.48
 Raigarh,Chhattisgarh,1493984,83.4,21.9
-South East ,Delhi,1500636,77.21667,28.66667
 West Singhbhum,Jharkhand,1502338,85.8167,22.5667
 Karnal,Haryana,1505324,76.98833,29.69
 Bhadrak,Odisha,1506337,86.52,21.05278
@@ -420,7 +414,7 @@ Hoshiarpur,Punjab,1586625,75.91722,31.53222
 Darjeeling,West Bengal,1595181,88.131065,27.058261
 Haveri,Karnataka,1597668,75.4,14.8
 Kaushambi,Uttar Pradesh,1599596,81.37729,25.53074
-Delhi,Delhi,1603444,77.2,28.7
+Delhi,Delhi,16787941,77.2,28.7
 Ratnagiri,Maharashtra,1615069,73.3,16.98333
 Nagapattinam,Tamil Nadu,1616450,79.833,10.767
 Pudukkottai,Tamil Nadu,1618345,78.81667,10.38333
@@ -533,7 +527,6 @@ Supaul,Bihar,2229076,86.5953,26.115
 Sultanpur,Uttar Pradesh,2249036,82.11667,26.45
 Khordha,Odisha,2251673,85.666,20.166
 Erode,Tamil Nadu,2251744,77.73333,11.35
-South West,Delhi,2292958,88.25,27.3333
 East Singhbhum,Jharkhand,2293919,86.1834,22.8
 Balasore,Odisha,2320529,86.9335,21.4927
 Rampur,Uttar Pradesh,2335819,79.029,28.809
@@ -564,7 +557,6 @@ Firozabad,Uttar Pradesh,2498156,78.42,27.15
 Mayurbhanj,Odisha,2519738,86.733,21.933
 Kannur,Kerala,2523003,75.35556,11.86889
 Aurangabad,Bihar,2540073,84.3667,24.75
-West,Delhi,2543243,120.687727,24.134535
 Mathura,Uttar Pradesh,2547184,77.68333,27.48333
 Bharatpur,Rajasthan,2548462,77.49,27.21722
 Amethi ,Uttar Pradesh,2549935,81.8057,26.1568
@@ -650,7 +642,6 @@ Ganjam,Odisha,3529031,85.05,19.383
 Kushinagar,Uttar Pradesh,3564544,83.888798,26.739546
 Bankura,West Bengal,3596674,87.06667,23.25
 Ghazipur,Uttar Pradesh,3620268,83.56667,25.58333
-North West,Delhi,3656539,77.303877,28.635056
 Aligarh,Uttar Pradesh,3673889,78.08,27.88
 Alwar,Rajasthan,3674179,76.625,27.56246
 Varanasi,Uttar Pradesh,3676841,83.00611,25.30694
