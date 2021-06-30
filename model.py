@@ -9,7 +9,9 @@ import random
 import pandasql as ps
 import pickle
 from scipy.stats import entropy
-
+from numpy import percentile
+import tensorflow.keras as keras
+import gc
 
 ########## Create ConvLSTM network ##############
  
@@ -188,18 +190,20 @@ def forecast(model,input_sequence,frames_grid,test_gridday,span,qt,in_grid=-1,ep
 	forecastframe = pd.DataFrame()
 	channels = input_sequence.shape[-1]
 	_span = 10
-	forecast_frames_grid = frames_grid[frames_grid['day'] <= max(frames_grid['day'])-_span]
+	#forecast_frames_grid = pickle.loads(pickle.dumps(frames_grid[frames_grid['day'] <= max(frames_grid['day'])-_span],-1))
+	forecast_frames_grid_array = []; colnames = frames_grid.columns
 	print(max(frames_grid['day'])-_span)
 	for k,(grid,_filler) in test_gridday.items():
 		if in_grid >-1 and in_grid != grid:
 			continue
+		grid_forecast_frames_grid = pickle.loads(pickle.dumps(frames_grid[(frames_grid.grid == grid) & (frames_grid['day'] <= max(frames_grid['day'])-_span)],-1))
 		track = input_sequence[k]
 		totpop = track[0,::,::,1] 
 		pix = totpop.shape[0]
 		print(grid)    
-		I_0 = np.log(np.array(forecast_frames_grid[(forecast_frames_grid.grid == grid) & (forecast_frames_grid.day == max(forecast_frames_grid.day))].sort_values(['pixno'])['I'])+1)
+		I_0 = np.log(np.array(grid_forecast_frames_grid[(grid_forecast_frames_grid.day == max(grid_forecast_frames_grid.day))].sort_values(['pixno'])['I'])+1)
 		I_0 = np.flip(I_0.reshape(pix,pix),0)
-
+		_forecast_frames_grid = pickle.loads(pickle.dumps(grid_forecast_frames_grid[grid_forecast_frames_grid['day']==max(grid_forecast_frames_grid['day'])],-1))
 		popexists = pickle.loads(pickle.dumps(totpop[::,::],-1))
 		popexists[popexists>0] = 1
 		######## for each prediction day
@@ -210,25 +214,26 @@ def forecast(model,input_sequence,frames_grid,test_gridday,span,qt,in_grid=-1,ep
 			I_0 = np.multiply(I_0,popexists)
 			new[new<0] = 0
 			new[new>1] = 1
-			if i > 0:
-				#print(max( forecast_frames_grid[(forecast_frames_grid.grid == grid)]['day']))
-				sum_beta_gamma = forecast_frames_grid[(forecast_frames_grid.grid == grid) & (forecast_frames_grid.day >41 )][['pixno','beta','gamma']].groupby(['pixno']).sum()
-				sum_beta = np.flip(np.array(sum_beta_gamma.beta).reshape(pix,pix),0)
-				sum_gamma =np.flip(np.array(sum_beta_gamma.gamma).reshape(pix,pix),0);         
 			if epsilon_T > 1 and i > 0:
-				#pass				
+				#pass
+				sum_beta_gamma = grid_forecast_frames_grid[(grid_forecast_frames_grid.day >41 )][['pixno','beta','gamma']].groupby(['pixno']).sum()
+				sum_beta = np.flip(np.array(sum_beta_gamma.beta).reshape(pix,pix),0)
+				sum_gamma =np.flip(np.array(sum_beta_gamma.gamma).reshape(pix,pix),0);   				
 				Iperc = pickle.loads(pickle.dumps(track[-1,::,::,4],-1)); Iperc[Iperc==0]=1        
 				gamma1 = I_0*(i+1)/epsilon_T+  new[0,::,::,0]*qt/Iperc + sum_beta -sum_gamma; gamma1[gamma1>0.2] = 0.2
 			else:
-				gamma = forecast_gamma(forecast_frames_grid,grid,5)
+				gamma = forecast_gamma(grid_forecast_frames_grid,grid,5)
 			if pixno > -1 and i > 0:
-				gamma = forecast_gamma(forecast_frames_grid,grid,5)
+				gamma = forecast_gamma(grid_forecast_frames_grid,grid,5)
 				pixcor = np.where(_gridpix == pixno)		
 				gamma[pixcor] = gamma[pixcor]	
 			elif i > 0 and epsilon_T>1:
 				gamma = gamma															
-			_forecast_frames_grid = calculate_future_SIR(forecast_frames_grid,grid,forecastbeta = new[0,::,::,0],forecastgamma = gamma,qt = qt)
-			forecast_frames_grid = forecast_frames_grid.append(_forecast_frames_grid, ignore_index=True)
+			_forecast_frames_grid = calculate_future_SIR(_forecast_frames_grid,grid,forecastbeta = new[0,::,::,0],forecastgamma = gamma,qt = qt)
+			if len(forecast_frames_grid_array) != 0:
+				forecast_frames_grid_array = np.concatenate((forecast_frames_grid_array,_forecast_frames_grid.values),axis = 0)
+			else:
+				forecast_frames_grid_array = _forecast_frames_grid.values
 			#print(span, max( forecast_frames_grid[(forecast_frames_grid.grid == grid)]['day']))
 			########### append channels
 			newtrack = new
@@ -242,36 +247,15 @@ def forecast(model,input_sequence,frames_grid,test_gridday,span,qt,in_grid=-1,ep
 			
 			track = np.concatenate((track, newtrack), axis=0)
 			predictframe = np.squeeze(new,0)[::,::,0][margin:pix-margin,margin:pix-margin]
-			_forecastframe = pd.DataFrame({'pixno':gridpix[totpop[margin:pix-margin,margin:pix-margin]>0].flatten(), 
-			'predict':predictframe[totpop[margin:pix-margin,margin:pix-margin]>0].flatten()}) 
-			_forecastframe['day'] = i
-			_forecastframe['grid'] = grid   
-			forecastframe = forecastframe.append(_forecastframe)   		
-	return (forecastframe,forecast_frames_grid)
+			#_forecastframe = pd.DataFrame({'pixno':gridpix[totpop[margin:pix-margin,margin:pix-margin]>0].flatten(), 
+			#'predict':predictframe[totpop[margin:pix-margin,margin:pix-margin]>0].flatten()}) 
+			#_forecastframe['day'] = i
+			#_forecastframe['grid'] = grid   
+			#forecastframe = forecastframe.append(_forecastframe) 
+	forecast_frames_grid = pd.DataFrame(forecast_frames_grid_array)
+	forecast_frames_grid.columns = colnames
+	return (forecast_frames_grid)
 	
-
-def calculate_future_SIR(forecast_frames_grid,grid,forecastbeta,forecastgamma,qt):
-	_forecast_frames_grid = forecast_frames_grid[forecast_frames_grid['grid'] == grid]
-	_forecast_frames_grid = _forecast_frames_grid[_forecast_frames_grid['day'] == max(_forecast_frames_grid['day'])].sort_values(['pixno'])
-	beta = np.flip(forecastbeta,0).flatten()
-	gamma = np.flip(forecastgamma,0).flatten()
-	_forecast_frames_grid.loc[:,'pixel'] = beta
-	_forecast_frames_grid.loc[:,'beta'] = beta*qt/_forecast_frames_grid.Iperc
-	_forecast_frames_grid.loc[:,'gamma'] = gamma
-	_forecast_frames_grid.loc[:,'new_pat'] = np.round(qt*beta *_forecast_frames_grid['SI']/(_forecast_frames_grid['I']+1)) #(_forecast_frames_grid['I']+1))
-	_forecast_frames_grid.loc[:,'no_pat'] = _forecast_frames_grid['new_pat'] + _forecast_frames_grid['no_pat']
-	_forecast_frames_grid.loc[:,'S'] = _forecast_frames_grid['S'] - _forecast_frames_grid['new_pat']
-	_forecast_frames_grid.loc[:,'new_removed_pat'] = np.round(gamma * (_forecast_frames_grid['I']+1))
-	_forecast_frames_grid.loc[_forecast_frames_grid['new_removed_pat']>_forecast_frames_grid['I'],['new_removed_pat']] = 0
-	_forecast_frames_grid.loc[:,'I'] = _forecast_frames_grid['I'] + _forecast_frames_grid['new_pat'] - _forecast_frames_grid['new_removed_pat']
-	_forecast_frames_grid.loc[:,'SI'] = _forecast_frames_grid['I'] * _forecast_frames_grid['S']
-	temp_I = np.array(_forecast_frames_grid['I'])
-	temp_I[temp_I<1] = 1
-	_forecast_frames_grid.loc[:,'Iperc'] = _forecast_frames_grid['I']/(_forecast_frames_grid['pop']+1) #1/temp_I
-	_forecast_frames_grid.loc[:,'Sperc'] = _forecast_frames_grid['S']/(_forecast_frames_grid['pop']+1)
-	_forecast_frames_grid.loc[:,'day'] = _forecast_frames_grid['day'] +1
-
-	return _forecast_frames_grid
 
 from statsmodels.tsa.arima_model import ARIMA	
 def forecast_gamma_model(frames_grid,span):
@@ -306,10 +290,13 @@ def validate(ensemble,test,testout,test_gridday,frames_grid,margin, qt, spatial_
 	gridpix = gridpix[margin:pix-margin,margin:pix-margin]
 	errorframe = pd.DataFrame()  
 	minpop = min(frames_grid['norm_pop']) 
-	span = 10#test_gridday[0][1]
+	span = test_gridday[0][1]
 	forecast_frames_grid = frames_grid[frames_grid['day'] <= max(frames_grid['day'])-span]
+	forecast_frames_grid_array = []; colnames = frames_grid.columns
 	for k,(grid,span) in test_gridday.items():
 		######## for each test grid
+		grid_forecast_frames_grid = pickle.loads(pickle.dumps(forecast_frames_grid[forecast_frames_grid.grid == grid],-1))
+		_forecast_frames_grid = pickle.loads(pickle.dumps(grid_forecast_frames_grid[grid_forecast_frames_grid['day']==max(grid_forecast_frames_grid['day'])],-1))
 		track = test[k]
 		totpop = track[0,::,::,1] 
 		pix = totpop.shape[0]
@@ -326,9 +313,13 @@ def validate(ensemble,test,testout,test_gridday,frames_grid,margin, qt, spatial_
 			new = np.multiply(new[0,::,::,0],popexists)[np.newaxis,::,::,np.newaxis]
 			new[new<0] = 0
 			new[new>1] = 1
-			gamma = forecast_gamma(forecast_frames_grid,grid,10)
-			_forecast_frames_grid = calculate_future_SIR(forecast_frames_grid,grid,forecastbeta = new[0,::,::,0],forecastgamma = gamma,qt = qt)
-			forecast_frames_grid = forecast_frames_grid.append(_forecast_frames_grid, ignore_index=True)
+			gamma = forecast_gamma(grid_forecast_frames_grid,grid,span)
+			_forecast_frames_grid = calculate_future_SIR(_forecast_frames_grid,grid,forecastbeta = new[0,::,::,0],forecastgamma = gamma,qt = qt)
+			if len(forecast_frames_grid_array) != 0:
+				forecast_frames_grid_array = np.concatenate((forecast_frames_grid_array,_forecast_frames_grid.values),axis = 0)
+			else:
+				forecast_frames_grid_array = _forecast_frames_grid.values
+			#print("forecast done")
 			########### append channels
 			newtrack = new
 			for channel in range(1,channels):
@@ -359,7 +350,34 @@ def validate(ensemble,test,testout,test_gridday,frames_grid,margin, qt, spatial_
 			cnt +=1
 	averageerror = errorsum/cnt
 	averagetotalerror /=	cnt
+	forecast_frames_grid = pd.DataFrame(forecast_frames_grid_array)
+	forecast_frames_grid.columns = colnames
 	return (averageerror,averagetotalerror,forecast_frames_grid)
+
+def calculate_future_SIR(forecast_frames_grid,grid,forecastbeta,forecastgamma,qt):
+	_forecast_frames_grid = forecast_frames_grid[forecast_frames_grid['grid'] == grid]
+	_forecast_frames_grid = _forecast_frames_grid[_forecast_frames_grid['day'] == max(_forecast_frames_grid['day'])].sort_values(['pixno'])
+	beta = np.flip(forecastbeta,0).flatten()
+	gamma = np.flip(forecastgamma,0).flatten()
+	_forecast_frames_grid.loc[:,'pixel'] = beta
+	_forecast_frames_grid.loc[:,'beta'] = beta*qt/_forecast_frames_grid.Iperc
+	_forecast_frames_grid.loc[:,'gamma'] = gamma
+	_forecast_frames_grid.loc[:,'new_pat'] = np.round(qt*beta *_forecast_frames_grid['SI']/(_forecast_frames_grid['I']+1)) #(_forecast_frames_grid['I']+1))
+	_forecast_frames_grid.loc[:,'no_pat'] = _forecast_frames_grid['new_pat'] + _forecast_frames_grid['no_pat']
+	_forecast_frames_grid.loc[:,'S'] = _forecast_frames_grid['S'] - _forecast_frames_grid['new_pat']
+	_forecast_frames_grid.loc[:,'new_removed_pat'] = np.round(gamma * (_forecast_frames_grid['I']+1))
+	_forecast_frames_grid.loc[_forecast_frames_grid['new_removed_pat']>_forecast_frames_grid['I'],['new_removed_pat']] = 0
+	_forecast_frames_grid.loc[:,'I'] = _forecast_frames_grid['I'] + _forecast_frames_grid['new_pat'] - _forecast_frames_grid['new_removed_pat']
+	_forecast_frames_grid.loc[:,'SI'] = _forecast_frames_grid['I'] * _forecast_frames_grid['S']
+	temp_I = np.array(_forecast_frames_grid['I'])
+	temp_I[temp_I<1] = 1
+	_forecast_frames_grid.loc[:,'Iperc'] = _forecast_frames_grid['I']/(_forecast_frames_grid['pop']+1) #1/temp_I
+	_forecast_frames_grid.loc[:,'Sperc'] = _forecast_frames_grid['S']/(_forecast_frames_grid['pop']+1)
+	_forecast_frames_grid.loc[:,'day'] = _forecast_frames_grid['day'] +1
+
+	return _forecast_frames_grid
+
+
 	
 	############ Test ensemble model foor Italy ####################
 ############ Test ensemble model foor Italy ####################
@@ -390,13 +408,14 @@ def test_model(model,test,testoutput,test_gridday,frames_grid,qt,spatial_channel
 	
 	return(KL_div,MAPE_grid,MAPE_countrytotal,averageerror,errorframe)
 
-
 def train_country_model(src_dir,model_dir,country,epochs = 20,hiddenlayers=4,batch_size = 50, channel = 2 , pixel = 16, filters = 32):
 	with open(src_dir+country+'prepdata.pkl', 'rb') as filehandler:
-		indata,df_pixel_county = pickle.load(filehandler)
-	(train,output,test,testoutput,test_gridday,frames_grid,qt) = indata
+		(train,output,test,testoutput,test_gridday,train_gridday) = pickle.load(filehandler)
+	frames_grid = pd.read_csv(src_dir+country+"framesgrid.csv")
+	frames_grid = pickle.loads(pickle.dumps(reduce_mem_usage(frames_grid),-1))
+	qt = percentile(frames_grid[frames_grid['no_pat']>0]['beta'],95)
 	with open(src_dir+country+'testprepdata.pkl', 'wb') as filehandler:
-		pickle.dump((test,testoutput,test_gridday,frames_grid,qt), filehandler)
+		pickle.dump((test,testoutput,test_gridday,qt), filehandler)
 	print(country+" test data have been saved in "+src_dir+country+'testprepdata.pkl')
 	if country == 'USA':
 		pass
@@ -412,38 +431,72 @@ def train_country_model(src_dir,model_dir,country,epochs = 20,hiddenlayers=4,bat
 		
 def test_country_model(src_dir,model_dir,country,span,margin=4):
 	with open(src_dir+country+'testprepdata.pkl', 'rb') as filehandler:
-		(test,testoutput,test_gridday,frames_grid,qt) = pickle.load(filehandler)
-	if country == 'USA':
-		pass
-	else:
-		model = keras.models.load_model(model_dir+country+"model.h5py")
-		if span > test_gridday[0][1]:
-			print("span should be less than ",test_gridday[0][1]+1)
-			raise
-		KL_div,MAPE_grid,MAPE_countrytotal,averageerror,errorframe = test_model(model,test,testoutput,test_gridday,frames_grid,qt,spatial_channel = [1],forecast_channel = [], calculate_channel = {},span=span)
-		errorframe.to_csv(src_dir+country+"errorframe.csv")
+		(test,testoutput,test_gridday,qt) = pickle.load(filehandler)
+	frames_grid = pd.read_csv(src_dir+country+'framesgrid.csv',usecols=['grid','day','pixno','Date','pop','no_pat','new_pat','new_removed_pat','S','I','Iperc','Sperc','invI','SI','beta','gamma','pixel','norm_pop'])
+	frames_grid = pickle.loads(pickle.dumps(reduce_mem_usage(frames_grid),-1))
+	gc.collect()
+	model = keras.models.load_model(model_dir+country+"model.h5py")
+	if span > test_gridday[0][1]:
+		print("span should be less than ",test_gridday[0][1]+1)
+		raise
+	KL_div,MAPE_grid,MAPE_countrytotal,averageerror,errorframe = test_model(model,test,testoutput,test_gridday,frames_grid,qt,spatial_channel = [1],forecast_channel = [], calculate_channel = {},span=span)
+	errorframe.to_csv(src_dir+country+"errorframe.csv",index = False)
 	return (KL_div,MAPE_grid,MAPE_countrytotal,averageerror)
 
 def forecast_country_cases(src_dir,country,span=100,margin=4):
 	with open(src_dir+country+'testprepdata.pkl', 'rb') as filehandler:
-		(test,testoutput,test_gridday,frames_grid,qt) = pickle.load(filehandler)
-	counties = pd.read_csv(src_dir+country+"_counties.csv")
-	forecast_frame = pd.DataFrame()
-	if country == 'USA':
-
-		for group, (train,output,test,testoutput,test_gridday,frames_grid) in enumerate(indata):
-			ensemble = load_ensemble('USA_group_'+str(group),src_dir)
-			forecast_frame = forecast_frame.append(forecast(ensemble,test,frames_grid,test_gridday,span,margin))
-	else:
-		model = keras.models.load_model(model_dir+country+"model.h5py")
-		forecastframe,forecast_frames_grid=forecast(model,test,frames_grid,test_gridday,span=span,qt=qt,spatial_channel=[1])
-	forecast_frame = ps.sqldf("""select a.*, b.day,b.Date, a.ratio*b.no_pat Total_case,a.ratio*b.pop population,a.ratio*b.new_pat New_case, 
-					a.ratio*b.new_removed_pat New_removed from df_pixel_county a join forecast_frames_grid b on a.grid = b.grid and a.pixno = b.pixno """,locals())
-	if country == 'USA':
-		forecast_frame['total_pat'] = forecast_frame.groupby(['cfips'])['predicted'].apply(lambda x: x.cumsum())
-	elif country == 'Italy':
-		forecast_frame['total_pat'] = forecast_frame.groupby(['ProvinceName','RegionName'])['predicted'].apply(lambda x: x.cumsum())
-		
+		(test,testoutput,test_gridday,qt) = pickle.load(filehandler)
+	frames_grid = pd.read_csv(src_dir+country+'framesgrid.csv',usecols=['grid','day','pixno','Date','pop','no_pat','new_pat','new_removed_pat','S','I','Iperc','Sperc','invI','SI','beta','gamma','pixel','norm_pop'])
+	frames_grid = pickle.loads(pickle.dumps(reduce_mem_usage(frames_grid),-1))
+	model = keras.models.load_model(src_dir+country+"model.h5py")
+	forecast_frames_grid=forecast(model,test,frames_grid,test_gridday,span=span,qt=qt,spatial_channel=[1])
+	forecast_frames_grid=forecast_frames_grid[['grid','day','pixno','no_pat','pop','new_pat','new_removed_pat']]
+	forecast_frames_grid = pickle.loads(pickle.dumps(reduce_mem_usage(forecast_frames_grid),-1))
+	df_pixel_county= pd.read_csv(src_dir+country+"pixel_counties.csv")
+	df_pixel_county = df_pixel_county[['grid','pixno','District','State','ratio']]
+	forecast_frames_county = pd.merge(forecast_frames_grid,df_pixel_county,left_on=['grid','pixno'],right_on=['grid','pixno'])
+	forecast_frames_county['no_pat'] = forecast_frames_county['no_pat']*forecast_frames_county['ratio']
+	forecast_frames_county['pop'] = forecast_frames_county['pop']*forecast_frames_county['ratio']
+	forecast_frames_county['new_pat'] = forecast_frames_county['new_pat']*forecast_frames_county['ratio']
+	forecast_frames_county['new_removed_pat'] = forecast_frames_county['new_removed_pat']*forecast_frames_county['ratio']
 	#forecast_frame.loc[:,['total_pat']] = forecast_frame['total_pat'] +forecast_frame['no_pat']
-	forecast_frame.to_csv(src_dir+country+"forecastcases.csv")
-	return forecast_frame
+	forecast_frames_county.to_csv(src_dir+country+"forecastcases.csv", index=False)
+	return forecast_frames_county
+
+def reduce_mem_usage(df):
+	""" iterate through all the columns of a dataframe and modify the data type
+		to reduce memory usage.		
+	"""
+	start_mem = df.memory_usage().sum() / 1024**2
+	print('Memory usage of dataframe is {:.2f} MB'.format(start_mem))
+	
+	for col in df.columns:
+		col_type = df[col].dtype
+		
+		if col_type != object:
+			c_min = df[col].min()
+			c_max = df[col].max()
+			if str(col_type)[:3] == 'int':
+				if c_min > np.iinfo(np.int8).min and c_max < np.iinfo(np.int8).max:
+					df[col] = df[col].astype(np.int8)
+				elif c_min > np.iinfo(np.int16).min and c_max < np.iinfo(np.int16).max:
+					df[col] = df[col].astype(np.int16)
+				elif c_min > np.iinfo(np.int32).min and c_max < np.iinfo(np.int32).max:
+					df[col] = df[col].astype(np.int32)
+				elif c_min > np.iinfo(np.int64).min and c_max < np.iinfo(np.int64).max:
+					df[col] = df[col].astype(np.int64)  
+			else:
+				if c_min > np.finfo(np.float16).min and c_max < np.finfo(np.float16).max:
+					df[col] = df[col].astype(np.float16)
+				elif c_min > np.finfo(np.float32).min and c_max < np.finfo(np.float32).max:
+					df[col] = df[col].astype(np.float32)
+				else:
+					df[col] = df[col].astype(np.float64)
+		else:
+			df[col] = df[col].astype('category')
+
+	end_mem = df.memory_usage().sum() / 1024**2
+	print('Memory usage after optimization is: {:.2f} MB'.format(end_mem))
+	print('Decreased by {:.1f}%'.format(100 * (start_mem - end_mem) / start_mem))
+	
+	return df

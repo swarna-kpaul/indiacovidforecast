@@ -4,6 +4,7 @@ import pandas as pd
 import pandasql as ps
 import matplotlib.pyplot as plt
 import pickle
+import multiprocessing
 ## Function to divide the GRID Area into Pixels
 ## Parameter Needed - 1. pixlatmax - float - Maximum Value of Lattitude( GRID Boundary) 2. pixlatmin - float - Minimum value of the lattitudes( GRID Boundary)
 ##						3. pixlonmax - float - Maximum value of Longitude( GRID Boundary) 4. pixlonmin - float - Minimum value of longitude( GRID Boundary)
@@ -106,15 +107,42 @@ def frames_df(df_pop_pat,Area_df):
 	days['day'] = np.arange(len(days))
 	Area_df['key'] = 1
 	days['key'] = 1
-	Area_day_df =Area_df.merge(days, on='key')
+	#Area_day_df =Area_df.merge(days, on='key')
 	frames_grid = pd.DataFrame()
 	for grid in set(Area_df['grid']):
-		Area_day_df_grid = Area_day_df[Area_day_df['grid']==grid]
-		df_pop_pat_grid = df_pop_pat[(df_pop_pat['lat'] >= np.min(Area_day_df_grid['minlat'])) & (df_pop_pat['lat'] < np.max(Area_day_df_grid['maxlat']))
-									 & (df_pop_pat['long'] >= np.min(Area_day_df_grid['minlong'])) & (df_pop_pat['long'] < np.max(Area_day_df_grid['maxlong']))]
+		Area_df_grid = Area_df[Area_df['grid']==grid]
+		Area_day_df_grid = pickle.loads(pickle.dumps(Area_df_grid.merge(days, on='key'),-1))
+		df_pop_pat_grid = pickle.loads(pickle.dumps(df_pop_pat[(df_pop_pat['lat'] >= np.min(Area_day_df_grid['minlat'])) & (df_pop_pat['lat'] < np.max(Area_day_df_grid['maxlat']))
+									 & (df_pop_pat['long'] >= np.min(Area_day_df_grid['minlong'])) & (df_pop_pat['long'] < np.max(Area_day_df_grid['maxlong']))],-1))
 		if len(df_pop_pat_grid) == 0:
 			continue
-		frames = ps.sqldf("""select a.grid,a.day,a.pixno,a.Date,
+		manager = multiprocessing.Manager()
+		return_dict = manager.dict()
+		p=multiprocessing.Process(target =get_grid_frames, args =(grid,Area_day_df_grid,df_pop_pat_grid,return_dict,))
+		p.start()
+		p.join()
+		frames = return_dict[1]    
+		#maxpop = max(frames['pop'])	
+		#frames['pixel'] = np.array((np.log(frames[['new_pat']].values.astype(float)+1)/np.log(frames[['sus_pop']].values.astype(float)+2)))
+		frames_grid = frames_grid.append(frames,ignore_index=True)
+	qt = percentile(frames_grid[frames_grid['no_pat']>0]['beta'],95)
+	frames_grid.loc[frames_grid['beta'] > qt, ['beta']] = qt
+	frames_grid['pixel'] = frames_grid['beta']/qt
+	frames_grid['day'] = frames_grid['day'] -min(frames_grid['day'])
+	frames_grid = frames_grid.sort_values(['grid','pixno','day'])
+	frames_grid['norm_pop'] = np.log(frames_grid['pop']+1)/np.log(max(frames_grid['pop']))
+	del Area_df_grid
+	del Area_day_df_grid
+	del df_pop_pat_grid
+	del Area_df
+	return (frames_grid,qt)
+
+
+def get_grid_frames(grid,Area_day_df_grid,df_pop_pat_grid,return_dict):
+	if len(df_pop_pat_grid) == 0:
+		return_dict[1] = pd.DataFrame()
+		return  
+	frames = ps.sqldf("""select a.grid,a.day,a.pixno,a.Date,
 					sum(ifnull(b.Tot_Infected,0)) no_pat,
 					sum(ifnull(a.pop,0))*0.7 pop,
 					sum(ifnull(b.delta_I,0)) new_pat, 
@@ -125,26 +153,17 @@ def frames_df(df_pop_pat,Area_df):
 					from Area_day_df_grid a left outer join df_pop_pat_grid b on a.Date = b.Date and
 					b.lat between a.minlat and a.maxlat and b.long between a.minlong and a.maxlong
 					group by a.grid,a.day,a.pixno""",locals())
-		frames['pop'] = frames.groupby(['grid','pixno'])['pop'].transform('max')
-		frames = frames.sort_values(['grid','pixno','day'])  
-		frames.loc[frames['I']<0, ['I']]= 0 
-		frames['Iperc'] = frames['I']/(frames['pop']+1)
-		frames['Sperc'] = frames['S']/(frames['pop']+1)			
-		frames['invI'] = 1/(frames['I']+1) 
-		frames['SI'] = frames['S']*frames['I']
-		frames['beta'] = frames['new_pat'].div(frames.groupby(['grid','pixno'])['SI'].shift(1)+1)*(frames['I']+1)
-		frames['gamma'] = frames['new_removed_pat'].div(frames.groupby(['grid','pixno'])['I'].shift(1)+1)
-		frames = frames.dropna()    
-		#maxpop = max(frames['pop'])	
-		#frames['pixel'] = np.array((np.log(frames[['new_pat']].values.astype(float)+1)/np.log(frames[['sus_pop']].values.astype(float)+2)))
-		frames_grid = frames_grid.append(frames,ignore_index=True)
-	qt = percentile(frames_grid[frames_grid['no_pat']>0]['beta'],95)
-	frames_grid.loc[frames_grid['beta'] > qt, ['beta']] = qt
-	frames_grid['pixel'] = frames_grid['beta']/qt
-	frames_grid['day'] = frames_grid['day'] -min(frames_grid['day'])
-	frames_grid = frames_grid.sort_values(['grid','pixno','day'])
-	frames_grid['norm_pop'] = np.log(frames_grid['pop']+1)/np.log(max(frames_grid['pop']))
-	return (frames_grid,qt)
+	frames['pop'] = frames.groupby(['grid','pixno'])['pop'].transform('max')
+	frames = frames.sort_values(['grid','pixno','day'])  
+	frames.loc[frames['I']<0, ['I']]= 0 
+	frames['Iperc'] = frames['I']/(frames['pop']+1)
+	frames['Sperc'] = frames['S']/(frames['pop']+1)			
+	frames['invI'] = 1/(frames['I']+1) 
+	frames['SI'] = frames['S']*frames['I']
+	frames['beta'] = frames['new_pat'].div(frames.groupby(['grid','pixno'])['SI'].shift(1)+1)*(frames['I']+1)
+	frames['gamma'] = frames['new_removed_pat'].div(frames.groupby(['grid','pixno'])['I'].shift(1)+1)
+	frames = frames.dropna()   
+	return_dict[1] = frames
 
 ## Prepares the Training Images for the Neural network injestion after Test Train Validation if the results meets proper Threshold
 ## Parameter Needed - 1. frames_grid - Output of frames_df function 2. minframe - Minimum no of frames required 3. channel - no of feature variable (population,patients) 4. extframes - Array External parameters like (no of testing,VMT if needed, defult - None)
@@ -164,27 +183,13 @@ def prep_image(frames_grid,minframe,testspan=5,src_dir="./", extframes = []):
 	for grid in sorted(set(frames_grid['grid'])):
 		train_samp = []
 		output_samp = []
+		grid_frames_grid = pickle.loads(pickle.dumps(frames_grid[(frames_grid['grid']==grid)][extframes+['pixel','pixno','day']],-1))
 		for day in range(days,0,-1):
-			frames = frames_grid[(frames_grid['grid']==grid) & (frames_grid['day']==day-1)].sort_values(['pixno'])
-			frame = np.array(frames['pixel']).reshape(pix,pix)
-			frame = np.flip(frame,0)
-			frame = frame[::,::,np.newaxis]
-
-			################# add any external frames
-			for newcol in extframes:
-				newframe = np.array(frames[newcol]).reshape(pix,pix)
-				newframe = np.flip(newframe,0)
-				frame = np.concatenate((frame,newframe[::,::,np.newaxis]),axis = 2)
-			train_samp.append(frame)
-			frame = frames_grid[(frames_grid['grid']==grid) & (frames_grid['day']==day)].sort_values(['pixno'])
-			frame = np.array(frame['pixel']).reshape(pix,pix)
-			frame = np.flip(frame,0)
-			frame = frame[::,::,np.newaxis]
-			for newcol in extframes:
-				newframe = np.array(frames[newcol]).reshape(pix,pix)
-				newframe = np.flip(newframe,0)
-				frame = np.concatenate((frame,newframe[::,::,np.newaxis]),axis = 2)
-			output_samp.append(frame)
+			trainframes = pickle.loads(pickle.dumps(grid_frames_grid[(grid_frames_grid['day']==day-1)].sort_values(['pixno']),-1))
+			outputframes = pickle.loads(pickle.dumps(grid_frames_grid[(grid_frames_grid['day']==day)].sort_values(['pixno']),-1))
+			trainframe,testframe = prepare_training_samp(trainframes,outputframes,pix,extframes)
+			train_samp.append(trainframe)
+			output_samp.append(testframe)
 		train_samp = np.array(train_samp)
 		output_samp = np.array(output_samp)
 		if train_samp.shape[0]< minframe:
@@ -208,7 +213,29 @@ def prep_image(frames_grid,minframe,testspan=5,src_dir="./", extframes = []):
 	output = np.array(output) 
 	with open(src_dir+country+"prepdata.pkl", 'wb') as filehandler:
 		pickle.dump((train,output,test,testoutput,test_gridday,train_gridday),filehandler)
-	return(train,output,test,testoutput,test_gridday,train_gridday)
+		
+		
+def prepare_training_samp(trainframes,testframes,pix,extframes):
+	trainframe = np.array(trainframes['pixel']).reshape(pix,pix)
+	trainframe = np.flip(trainframe,0)
+	trainframe = trainframe[::,::,np.newaxis]
+			################# add any external frames
+	for newcol in extframes:
+		newframe = np.array(trainframes[newcol]).reshape(pix,pix)
+		newframe = np.flip(newframe,0)
+		trainframe = np.concatenate((trainframe,newframe[::,::,np.newaxis]),axis = 2)
+	#return_dict['trainsamp'] = frame
+	
+	testframe = np.array(testframes['pixel']).reshape(pix,pix)
+	testframe = np.flip(testframe,0)
+	testframe = testframe[::,::,np.newaxis]
+	for newcol in extframes:
+		newframe = np.array(testframes[newcol]).reshape(pix,pix)
+		newframe = np.flip(newframe,0)
+		testframe = np.concatenate((testframe,newframe[::,::,np.newaxis]),axis = 2)
+	#return_dict['outputsamp'] = frame
+	del newframe
+	return (trainframe,testframe)
 
 # """Compute softmax values for each sets of scores in x."""
 def softmax(x):
@@ -259,8 +286,8 @@ def country_dataprep(src_dir,tgt_dir,country='India',testspan = 100,channel = 2,
 		df_pixel_county['ratio']=df_pixel_county.groupby(['grid','pixno'])['Tot_I'].apply(lambda x: softmax(x))
 	
 	frames_grid,qt = frames_df(df_pop_pat,Area_df)
-	
-	(train,output,test,testoutput,test_gridday) = prep_image(frames_grid,minframe=minframe,testspan=testspan)
-	data = (train,output,test,testoutput,test_gridday,frames_grid,qt)
-	with open(tgt_dir+country+"prepdata.pkl", 'wb') as filehandler:
-		pickle.dump((data,df_pixel_county),filehandler)
+	frames_grid.to_csv(tgt_dir+country+"framesgrid.csv",index=False)
+	df_pixel_county.to_csv(tgt_dir+country+"pixel_counties.csv",index=False)
+	return qt
+	#with open(tgt_dir+country+"framesdata.pkl", 'wb') as filehandler:
+	#	pickle.dump((frames_grid,df_pixel_county,qt),filehandler)
