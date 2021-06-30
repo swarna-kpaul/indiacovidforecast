@@ -23,7 +23,7 @@ def create_test_model(workingdir,refresh_data = 'Y',preparegrid='Y',prepaprefram
 		
 	
 	
-def forecast_cases(workingdir,refresh_data = 'Y',preparedata='Y',createmodel='Y',forecast='Y'):
+def forecast_cases(workingdir,refresh_data = 'Y',preparedata='Y',createmodel='Y',forecast='Y',forecastspan=100):
 	testspan = 1
 	if refresh_data == 'Y':
 		fetch_india_patientdata(workingdir)
@@ -32,6 +32,6 @@ def forecast_cases(workingdir,refresh_data = 'Y',preparedata='Y',createmodel='Y'
 	if createmodel == 'Y':
 		train_country_model(workingdir,workingdir,country='India')
 	if forecast == 'Y':
-		forecast_frame = forecast_country_cases(workingdir,country='India')
+		forecast_frame = forecast_country_cases(workingdir,country='India', span=forecastspan)
 		return forecast_frame
 		
