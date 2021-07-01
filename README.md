@@ -1,4 +1,5 @@
 # indiacovidforecast
+Reference paper - https://www.medrxiv.org/content/10.1101/2020.10.19.20215665v1
 
 All intermediate and output files will be stored in workingdir
 
